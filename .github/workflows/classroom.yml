@@ -1,31 +1,17 @@
 name: GitHub Classroom Workflow
-
 on: [push]
-
 jobs:
   build:
     name: Autograding
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
+      
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
-          cache: 'maven'
           
-      - name: Build and run tests
-        run: mvn -B test
-
-      - name: Save test results
-        if: always()
-        run: |
-          mkdir -p target/test-results
-          find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} target/test-results/ \;
-
-      - name: Autograding
-        uses: education/autograding@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run tests
+        run: mvn test
